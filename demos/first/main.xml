@@ -1,0 +1,7 @@
+<ui>
+  <styles src="styles.css"/>
+  <window id="mainWnd">
+  </window>
+  <window>
+  </window>
+</ui>
