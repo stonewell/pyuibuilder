@@ -1,3 +1,6 @@
+'''
+builder.py for ui builder
+'''
 import logging
 
 try:
@@ -22,6 +25,9 @@ class _UIModel(dict):
         self[name] = v
 
 class Builder(object):
+    '''
+    ui builder to create ui from xml description
+    '''
     def __init__(self):
         super(Builder, self).__init__()
         self.__nodes = {}
@@ -29,6 +35,9 @@ class Builder(object):
         self.__id_count = 0
 
     def load(self, path):
+        '''
+        load xml ui description from file specified by path
+        '''
         root = ET.parse(path).getroot()
         self._process_root_node(root)
 
@@ -42,6 +51,9 @@ class Builder(object):
                 self._process_general_node(child)
 
     def loadstring(self, xmlcontent):
+        '''
+        load xml ui description from xml string
+        '''
         root = ET.fromstring(xmlcontent)
         self._process_root_node(root)
 
@@ -54,7 +66,7 @@ class Builder(object):
     def _process_styles(self, node):
         logging.info('get styles node:{}'.format(node.attrib))
         styles = self._load_styles(node)
-        
+
         self.__styles = self._merge_styles(self.__styles, styles)
 
     def _merge_styles(self, dst, src):
@@ -74,16 +86,19 @@ class Builder(object):
         return 'id_{}_{}'.format(node.tag, self.__id_count)
 
     def build(self):
+        '''
+        create ui widget using loaded xml description
+        '''
         ui_model = _UIModel()
 
-        for id in self.__nodes:
-            node = self.__nodes[id]
+        for _id in self.__nodes:
+            node = self.__nodes[_id]
 
             widget = self._create_widget(node)
             layout = self._create_layout(node, self.__styles)
 
             layout.apply(widget)
-            
+
             ui_model[id] = widget
 
         return ui_model
