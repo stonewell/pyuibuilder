@@ -53,7 +53,21 @@ class Builder(object):
 
     def _process_styles(self, node):
         logging.info('get styles node:{}'.format(node.attrib))
-        self.__styles = node
+        styles = self._load_styles(node)
+        
+        self.__styles = self._merge_styles(self.__styles, styles)
+
+    def _merge_styles(self, dst, src):
+        if not dst:
+            return src
+
+        if src:
+            dst.update(src)
+
+        return dst
+
+    def _load_styles(self, node):
+        return None
 
     def _gen_id(self, node):
         self.__id_count += 1
@@ -65,6 +79,17 @@ class Builder(object):
         for id in self.__nodes:
             node = self.__nodes[id]
 
-            ui_model[id] = node
+            widget = self._create_widget(node)
+            layout = self._create_layout(node, self.__styles)
+
+            layout.apply(widget)
+            
+            ui_model[id] = widget
 
         return ui_model
+
+    def _create_widget(self, node):
+        pass
+
+    def _create_layout(self, node, styles):
+        pass
