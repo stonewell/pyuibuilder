@@ -46,10 +46,10 @@ class Builder(object):
         self._process_root_node(root)
 
     def _process_general_node(self, node):
-        id = node.attrib['id'] if 'id' in node.attrib else self._gen_id(node)
+        _id = node.attrib['id'] if 'id' in node.attrib else self._gen_id(node)
 
-        logging.info('get node:{}, attrib:{} with id:{}'.format(node.tag, node.attrib, id))
-        self.__nodes[id] = node
+        logging.info('get node:{}, attrib:{} with id:{}'.format(node.tag, node.attrib, _id))
+        self.__nodes[_id] = node
 
     def _process_styles(self, node):
         logging.info('get styles node:{}'.format(node.attrib))
