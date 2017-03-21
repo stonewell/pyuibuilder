@@ -1,7 +1,13 @@
 <ui>
   <styles src="styles.css"/>
   <window id="mainWnd">
-  </window>
-  <window>
+    <tab>
+      <tabpage title="Page 1">
+	<label text="this is page 1"/>
+      </tabpage>
+      <tabpage>
+	<label text="this is page 2"/>
+      </tabpage>
+    </tab>
   </window>
 </ui>

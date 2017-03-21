@@ -11,7 +11,10 @@ def main():
 
     ui = builder.build()
 
+    print(ui)
     print(ui.mainWnd, ui['mainWnd'])
+
+    ui.run()
 
 if __name__ == '__main__':
     main()

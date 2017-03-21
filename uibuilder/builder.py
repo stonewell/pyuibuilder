@@ -2,6 +2,7 @@
 builder.py for ui builder
 '''
 import logging
+from .backend import create_widget, run_app
 
 try:
     import xml.etree.cElementTree as ET
@@ -24,6 +25,9 @@ class _UIModel(dict):
 
         self[name] = v
 
+    def run(self):
+        run_app()
+
 class Builder(object):
     '''
     ui builder to create ui from xml description
@@ -43,7 +47,7 @@ class Builder(object):
 
     def _process_root_node(self, root):
         for child in root:
-            print(child, child.attrib, child.tag)
+            logging.info('child:{}, attrib:{}, tag:{}'.format(child, child.attrib, child.tag))
 
             if hasattr(self, '_process_' + child.tag):
                 getattr(self, '_process_' + child.tag)(child)
@@ -89,22 +93,42 @@ class Builder(object):
         '''
         create ui widget using loaded xml description
         '''
-        ui_model = _UIModel()
+        _ui_model = _UIModel()
 
         for _id in self.__nodes:
-            node = self.__nodes[_id]
+            _node = self.__nodes[_id]
 
-            widget = self._create_widget(node)
-            layout = self._create_layout(node, self.__styles)
+            _widget = self._create_widget_from_node(_ui_model, _node)
+            _widget.set_id(_id)
 
-            layout.apply(widget)
+            _ui_model[_id] = _widget
 
-            ui_model[id] = widget
-
-        return ui_model
+        return _ui_model
 
     def _create_widget(self, node):
-        pass
+        return create_widget(node)
+
+    def _apply_attribs(self, w, node):
+        for attr in node.attrib:
+            w.apply_attrib(attr, node.attrib[attr])
+
+    def _create_widget_from_node(self, ui_model, node):
+        _widget = self._create_widget(node)
+        _layout = self._create_layout(node, self.__styles)
+        self._apply_attribs(_widget, node)
+
+        if _layout:
+            _layout.apply(_widget)
+
+        for child in node:
+            _child_id = child.attrib['id'] if 'id' in child.attrib else self._gen_id(child)
+            _child_widget = self._create_widget_from_node(ui_model, child)
+            _child_widget.set_id(_child_id)
+            ui_model[_child_id] = _child_widget
+
+            _widget.add_child(_child_widget)
+
+        return _widget
 
     def _create_layout(self, node, styles):
         pass
