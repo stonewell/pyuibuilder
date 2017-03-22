@@ -3,12 +3,14 @@
   <window id="mainWnd" title="First Demo"
 	  width="640"
 	  height="480"
-	  content_size="720, 360">
+	  content_size="720, 360"
+	  margined="True">
     <tab>
-      <tabpage title="Page 1">
+      <tabpage title="Page 1"
+	       margined="True">
 	<label text="this is page 1"/>
       </tabpage>
-      <tabpage>
+      <tabpage margined="False">
 	<label text="this is page 2"/>
       </tabpage>
     </tab>

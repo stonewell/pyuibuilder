@@ -117,7 +117,13 @@ class WidgetManager(object):
 
         self._update_helper_funcs(w)
 
-        w.add_child = lambda x:w.append(getattr(x, 'title') if hasattr(x, 'title') else x.get_id(), x)
+        def _tab_add_child(x):
+            w.append(getattr(x, 'title') if hasattr(x, 'title') else x.get_id(), x)
+
+            if hasattr(x, 'margined'):
+                w.setMargined(w.getNumPages() - 1, getattr(x, 'margined'))
+                
+        w.add_child = _tab_add_child
 
         return w
 
