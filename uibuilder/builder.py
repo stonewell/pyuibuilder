@@ -2,7 +2,7 @@
 builder.py for ui builder
 '''
 import logging
-from .backend import create_widget, run_app
+from .backend import create_widget, run_app, stop_app
 
 try:
     import xml.etree.cElementTree as ET
@@ -27,6 +27,9 @@ class _UIModel(dict):
 
     def run(self):
         run_app()
+
+    def stop(self):
+        stop_app()
 
 class Builder(object):
     '''

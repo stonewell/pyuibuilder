@@ -14,6 +14,9 @@ def main():
     print(ui)
     print(ui.mainWnd, ui['mainWnd'])
 
+    print(ui.mainWnd.title)
+
+    ui.mainWnd.on_close = lambda data: ui.stop()
     ui.run()
 
 if __name__ == '__main__':

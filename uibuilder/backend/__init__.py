@@ -40,7 +40,11 @@ def create_widget_from_tag(tag):
 def run_app():
     _wm = __load_backend_widget_manager()
     _wm.run_app()
-    
+
+def stop_app():
+    _wm = __load_backend_widget_manager()
+    _wm.stop_app()
+
 def __load_module_by_name(m_name):
     '''
     load module using given moudle name m_name
